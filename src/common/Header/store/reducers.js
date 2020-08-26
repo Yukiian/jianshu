@@ -1,20 +1,35 @@
-import { SET_INPUT_FOCUS, SET_INPUT_BLUR } from "./actionTypes";
+import * as constants from "./constants";
+import {
+  fromJS
+} from 'immutable'
 
-const defaultState = {
+const defaultState = fromJS({
   focused: false,
-};
+  list: [],
+  mouseIn: false,
+  page: 1,
+  totalPage: 1
+});
 
 export default (state = defaultState, action) => {
-  if (action.type === SET_INPUT_FOCUS) {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.focused = true;
-    return newState
-  }
 
-  if (action.type === SET_INPUT_BLUR) {
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.focused = false;
-    return newState
+  switch (action.type) {
+    case constants.SET_INPUT_FOCUS:
+      return state.set('focused', true);
+    case constants.SET_INPUT_BLUR:
+      return state.set('focused', false);
+    case constants.CHANGE_LIST:
+      return state.merge({
+        list: action.data,
+        totalPage: action.totalPage
+      })
+    case constants.MOUSE_ENTER:
+      return state.set('mouseIn', true);
+    case constants.MOUSE_LEAVE:
+      return state.set('mouseIn', false);
+    case constants.CHANGE_PAGE:
+      return state.set('page', action.page);
+    default:
+      return state;
   }
-  return state;
 };
