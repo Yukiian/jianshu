@@ -1,5 +1,5 @@
-import reduce from './reducers'
+import reducer from './reducers'
 
 export {
-    reduce
+    reducer
 }
